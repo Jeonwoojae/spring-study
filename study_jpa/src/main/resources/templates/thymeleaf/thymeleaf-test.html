@@ -1,0 +1,19 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>타임리프 th:text 속성 사용하기</title>
+</head>
+<body>
+    <h1 th:text="asfqw">Thymeleaf-test!</h1>
+<!-- th:text는 타임리프의 여러 속성 중 하나. 코드 상에는 이렇게 보이지만
+해당 요소의 텍스트 값이 대체된다. 보통 변수 값을 넘겨받아 출력한다.
+
+만약 th:text에 받아온 값이 없으면 500에러 발생. 따라서 값의 유무를 체크하거나 기본값 지정이 필요할 수 있다.
+값이 있더라도 띄어쓰기가 들어가면 에러가 발생.
+-->
+</body>
+</html>
