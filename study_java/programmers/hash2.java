@@ -34,16 +34,16 @@ class Solution {
         // - 같은 플레이 횟수를 가진 경우에는 고유 번호가 낮은 순으로 정렬합니다.
 
         List<String> sortedGenres = genreMap.entrySet().stream()
-                .sorted(Map.Entry.<String,Integer>comparingByValue().reversed())
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
         List<Integer> answer = new ArrayList<>();
 
-        for(String genre : sortedGenres){
+        for (String genre : sortedGenres) {
             answer.addAll(highPlaysGenreIndexMap.get(genre));
         }
 
-        return answer.stream().mapToInt(i->i).toArray();
+        return answer.stream().mapToInt(i -> i).toArray();
     }
 }

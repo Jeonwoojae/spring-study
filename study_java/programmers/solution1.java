@@ -9,14 +9,14 @@ class Solution {
         Date now = format.parse(today);
 
         // 약관 데이터 저장
-        HashMap<String,String> length = new HashMap<>();
-        for(String o : terms){
+        HashMap<String, String> length = new HashMap<>();
+        for (String o : terms) {
             String[] strArr = o.split(" ");
-            length.put(strArr[0],strArr[1]);
+            length.put(strArr[0], strArr[1]);
         }
 
         // 유효기간 만료 확인
-        for(int i = 0;i<privacies.length;i++){
+        for (int i = 0; i < privacies.length; i++) {
             String[] strArr = privacies[i].split(" ");
             String type = strArr[1];
 
@@ -31,14 +31,12 @@ class Solution {
             // System.out.println(Integer.valueOf(length.get(type)));
 
             // 현재 날짜와 비교
-            if(calInfoDate.getTime().compareTo(calToday.getTime()) <= 0){
-                result.add(i+1);
+            if (calInfoDate.getTime().compareTo(calToday.getTime()) <= 0) {
+                result.add(i + 1);
             }
 
         }
 
-        return result.stream()
-                .mapToInt(i->i)
-                .toArray();
+        return result.stream().mapToInt(i -> i).toArray();
     }
 }
