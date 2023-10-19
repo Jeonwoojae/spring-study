@@ -1,16 +1,26 @@
-import java.util.*;
+import java.util.HashMap;
 
-class Solution {
+public class Solution {
     public String[] solution(String[] players, String[] callings) {
-        List<String> playerList = new ArrayList<>(Arrays.asList(players));
+        int n = players.length;
+        HashMap<String, Integer> indexMap = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            indexMap.put(players[i], i);
+        }
 
         for (String calling : callings) {
-            int idx = playerList.indexOf(calling);
+            int idx = indexMap.get(calling);
             if (idx > 0) {
-                Collections.swap(playerList, idx-1, idx);
+                String temp = players[idx - 1];
+                players[idx - 1] = players[idx];
+                players[idx] = temp;
+
+                indexMap.put(players[idx - 1], idx - 1);
+                indexMap.put(players[idx], idx);
             }
         }
 
-        return playerList.toArray(new String[0]);
+        return players;
     }
 }
