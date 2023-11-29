@@ -1,70 +1,85 @@
-import java.time.LocalTime;
 import java.util.*;
 
 class Solution {
-    public class Plan {
-        public String name;
-        public LocalTime startTime;
-        public int remainTime;
+    public String[] solution(String[][] tasks) {
+        String[] result = new String[tasks.length];
 
-        public Plan(String name, String startTime, String remainTime) {
-            this.name = name;
-            this.startTime = LocalTime.parse(startTime);
-            this.remainTime = Integer.parseInt(remainTime);
-        }
+        Stack<String[]> pausedTasks = new Stack<>();
 
-        public void doPlan(int minute) {
-            System.out.println("현재 작업 수행"+this.name+":" +minute);
-            this.remainTime -= minute;
-            if(this.remainTime > 0) {
-                stack.push(this);
-            } else {
-                answer.add(this.name);
-            }
-        }
-    }
+        Arrays.sort(tasks,(a,b)->ToSec(a[1])-(ToSec(b[1])));
 
-    public static Deque<Plan> stack = new ArrayDeque<>();
-    public static List<String> answer = new ArrayList<>();
 
-    // 시간의 차이를 분 단위로 계산하는 메서드
-    public int calculateMinutes(LocalTime start, LocalTime end) {
-        int hours = end.getHour() - start.getHour();
-        int minutes = end.getMinute() - start.getMinute();
-        return hours * 60 + minutes;
-    }
+        int totalTasks = tasks.length;
 
-    public String[] solution(String[][] plans) {
-        List<Plan> planList = new ArrayList<>();
-        for (String[] plan : plans) {
-            planList.add(new Plan(plan[0], plan[1], plan[2]));
-        }
+        int resultIndex=0;
+        int taskIndex=0;
+        int currentTime=0;
+        String taskType ="";
+        int taskStart =0;
+        int taskDuration =0;
+        int nextTaskStart=0;
+        while(totalTasks != taskIndex){
 
-        planList.sort(Comparator.comparing(plan -> plan.startTime));
+            taskType = tasks[taskIndex][0];
+            taskStart = ToSec(tasks[taskIndex][1]);
+            taskDuration = Integer.parseInt(tasks[taskIndex][2]);
 
-        for(int i=0;i<planList.size();i++) {
-            Plan currentPlan = planList.get(i);
-            if((i+1) < planList.size()) {
-                Plan nextPlan = planList.get(i+1);
-                int freeTime = calculateMinutes(currentPlan.startTime, nextPlan.startTime);
-                currentPlan.doPlan(freeTime);
+            currentTime = taskStart + taskDuration;
 
-                while(!stack.isEmpty() && stack.peek().startTime.plusMinutes(stack.peek().remainTime).isBefore(nextPlan.startTime)) {
-                    Plan stackedPlan = stack.pop();
-                    freeTime = calculateMinutes(stackedPlan.startTime, nextPlan.startTime);
-                    stackedPlan.doPlan(freeTime);
+            // Check if the new task overlaps with the current one
+            if(totalTasks-1 != taskIndex){
+                nextTaskStart = ToSec(tasks[taskIndex+1][1]);
+                if(currentTime > nextTaskStart){
+
+                    pausedTasks.push(new String[]{taskType, currentTime - nextTaskStart + ""});
+                    currentTime = nextTaskStart;
+                    taskIndex++;
+
+                    continue;
+
                 }
-            } else {
-                currentPlan.doPlan(currentPlan.remainTime);
             }
+
+            // Complete the current task
+            result[resultIndex++]= taskType;
+
+            // Check if we can complete the paused tasks during the remaining time
+            while(!pausedTasks.isEmpty()){
+
+                int remainingTime = nextTaskStart - currentTime;
+
+                String[] pausedTask = pausedTasks.pop();
+
+                int pausedTaskDuration = Integer.parseInt(pausedTask[1]);
+
+                // Complete the paused task
+                if(remainingTime >= pausedTaskDuration){
+
+                    result[resultIndex++]= pausedTask[0];
+                    currentTime += pausedTaskDuration;
+                } else {
+                    // Pause the task again
+                    pausedTasks.push(new String[]{pausedTask[0], pausedTaskDuration - remainingTime + ""});
+                    break;
+                }
+            }
+            taskIndex++;
         }
 
-        while(!stack.isEmpty()) {
-            Plan currentPlan = stack.pop();
-            currentPlan.doPlan(currentPlan.remainTime);
+        // Finish the remaining paused tasks
+        while(!pausedTasks.isEmpty()){
+            result[resultIndex++]= pausedTasks.pop()[0];
         }
 
-        return answer.toArray(new String[0]);
+        return result;
+    }
+
+    public int ToSec (String time){
+
+        String[] timeParts = time.split(":");
+        int hours = Integer.parseInt(timeParts[0]) * 60;
+        int minutes = Integer.parseInt(timeParts[1]);
+
+        return hours + minutes;
     }
 }
-
