@@ -1,11 +1,15 @@
 class Solution {
     public String solution(String s) {
-        String answer = "";
-        String[] list = s.split(" ");
-        for(int i=0;i<list.length;i++) {
-            list[i] = list[i].substring(0,1).toUpperCase() + list[i].substring(1).toLowerCase();
-            answer += list[i] + " ";
+        StringBuilder answer = new StringBuilder();
+        String[] words = s.toLowerCase().split("");
+
+        boolean flag = true;
+
+        for(String word : words) {
+            answer.append(flag ? word.toUpperCase() : word);
+            flag = word.equals(" ") ? true : false;
         }
-        return answer.trim();
+
+        return answer.toString();
     }
 }
