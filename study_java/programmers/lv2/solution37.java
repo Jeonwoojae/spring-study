@@ -1,4 +1,43 @@
 class Solution {
+
+    /*
+        짝수, 홀수에 따라 찾는 방법이 다르다.
+        - 짝수의 경우
+        2를 이진수로 변경하면 10. 가장 낮은 자리의 0을 1로 변경하면 문제의 조건을 만족한다.
+        이것을 10진수로 변경하면 3.ㄴ
+        - 홀수의 경우
+        7을 이진수로 변경하면 0111. 가장 낮은 자리의 0을 1로 변경하고 그 다음 자리의 1을 0으로 변경하면 조건을 만족한다.
+        이것을 10진수로 변경하면 11
+    */
+
+    public long[] solution(long[] numbers) {
+        long[] answer = new long[numbers.length];
+        int index = 0;
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] % 2 == 0) {
+                // 짝수인 경우, 가장 낮은 자리의 0을 1로 변경
+                // 1을 더하면 변경되는 이유는 짝수면 나누어 떨어져 마지막 자리가 무조건 0이 되기 때문.
+                answer[i] = numbers[i] + 1;
+            } else {
+                // 홀수인 경우, 가장 낮은 자리의 0을 1로 바꾸고 그 다음 자리의 1을 0으로 변경.
+                long bit = 0; // 가장 낮은 자리의 0의 위치
+                while (((numbers[i] >> bit) & 1) == 1) {
+                    // 1과 AND 연산을 통해 bit를 우측 시프트 연산했을 때 0인 위치를 찾기.
+                    bit++;
+                }
+
+                // 가장 낮은 자리의 0을 1로 바꾸고 그 다음 자리의 1을 0으로 변경.
+                // 0인 위치를 찾고 그 전 비트에 1을 더하면 한번에 두 비트 값을 변경 가능.
+                answer[i] = numbers[i] + (1L << (bit - 1));
+            }
+        }
+
+        return answer;
+    }
+
+    /*
+    * ******************************** 아래는 완전 탐색으로 풀어 시간초과
+    * */
     public long[] solution(long[] numbers) {
         long[] answer = new long[numbers.length];
         int index = 0;
