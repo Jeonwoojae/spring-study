@@ -38,7 +38,7 @@ public class Main {
                     // 시계방향 회전
                     char temp = a[i][7];
                     for (int j=7;j>=1;j--) {
-                        a[i][j] = a[i]][j-1];
+                        a[i][j] = a[i][j-1];
                     }
                     a[i][0] = temp;
                 } else if (d[i] == -1) {
