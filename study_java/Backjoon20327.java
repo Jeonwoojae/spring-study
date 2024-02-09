@@ -1,5 +1,6 @@
 import java.util.*;
 public class Main {
+    // 1번 연산. 배열의 상하 반전
     static int[][] operation1(int[][] a) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -10,6 +11,7 @@ public class Main {
         }
         return ans;
     }
+    // 연산 5. 부분 배열을 한칸으로 생각하여 상하반전
     static int[][] operation5(int[][] a, int l) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -30,6 +32,7 @@ public class Main {
         }
         return ans;
     }
+    // 2번 연산. 배열의 좌우 반전
     static int[][] operation2(int[][] a) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -40,6 +43,7 @@ public class Main {
         }
         return ans;
     }
+    // 연산 6. 부분 배열을 한칸으로 좌우반전
     static int[][] operation6(int[][] a, int l) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -60,6 +64,7 @@ public class Main {
         }
         return ans;
     }
+    // 연산 3. 90도 시계방향 회전
     static int[][] operation3(int[][] a) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -70,6 +75,7 @@ public class Main {
         }
         return ans;
     }
+    // 연산 7. 부분 배열을 한칸으로 시계방향 90도 회전
     static int[][] operation7(int[][] a, int l) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -90,6 +96,7 @@ public class Main {
         }
         return ans;
     }
+    // 연산4. 90도 반시계 회전
     static int[][] operation4(int[][] a) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -100,6 +107,7 @@ public class Main {
         }
         return ans;
     }
+    // 연산 8. 부분 배열을 한칸으로 시계 반대방향 90도 회전
     static int[][] operation8(int[][] a, int l) {
         int n = a.length;
         int[][] ans = new int[n][n];
@@ -121,6 +129,7 @@ public class Main {
         return ans;
     }
     static void operation_1_to_4(int[][] a, int k, int sx, int sy, int len) {
+        // a:저장된 배열, k:연산 타입, sx,sy: 시작 위치, len:부분 배열 크기
         int[][] b = new int[len][len];
         for (int i=0; i<len; i++) {
             for (int j=0; j<len; j++) {
@@ -158,6 +167,7 @@ public class Main {
             int l = sc.nextInt();
             int sub_size = (1 << l);
             if (1 <= k && k <= 4) {
+                // 부분 배열 크기만큼 연산 수행
                 for (int i=0; i<size; i+=sub_size) {
                     for (int j=0; j<size; j+=sub_size) {
                         operation_1_to_4(a, k, i, j, sub_size);
