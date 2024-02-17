@@ -31,8 +31,8 @@ public class Main {
             }
             x -= 1;
             y += 1;
-            return true;
         }
+        return true;
     }
     static void calc(int row) {
         if (row == n) {
