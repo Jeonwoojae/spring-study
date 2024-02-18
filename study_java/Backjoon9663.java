@@ -1,6 +1,56 @@
 import java.util.*;
 
 public class Main {
+    static boolean[][] a = new boolean[15][15];
+    static int n;
+    static boolean[] check_col = new boolean[15];  // i번 열에 퀸이 있으면 true
+    static boolean[] check_dig = new boolean[40];  // /대각선에 퀸이 있으면 true
+    static boolean[] check_dig2 = new boolean[40];  // \대각선에 퀀이 있으면 true
+    // 퀸을 놓을 수 있는지 검사
+    static boolean check(int row, int col) {
+        // 현재 열
+        if (check_col[col]) {
+            return false;
+        }
+        // 왼쪽 위 대각선
+        if (check_dig[row+col]) {
+            return false;
+        }
+        // 오른쪽 위 대각선
+        if (check_dig2[row-col+n]) {
+            return false;
+        }
+        return true;
+    }
+    static int calc(int row) {
+        if (row == n) {
+            // ans += 1;
+            return 1;
+        }
+        int cnt = 0;
+        for (int col=0; col<n; col++) {
+            if (check(row, col)) {
+                check_dig[row+col] = true;
+                check_dig2[row-col+n] = true;
+                check_col[col] = true;
+                a[row][col] = true;
+                cnt += calc(row+1);
+                check_dig[row+col] = false;
+                check_dig2[row-col+n] = false;
+                check_col[col] = false;
+                a[row][col] = false;
+            }
+        }
+        return cnt;
+    }
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        System.out.println(calc(0));
+    }
+}
+
+public class Main {
     static boolean[][] a = new boolean[15][15];  // 체스판
     static int n;  // 1~15
     static int ans = 0;
